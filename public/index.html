@@ -10,39 +10,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
-  <body class="blue-grey lighten-5">
+  <body class="blue-grey lighten-5" style="overflow:hidden;height:100%;">
+    <nav class="nav-extended deep-purple">
+      <div class="nav-wrapper">
+        <a class="brand-logo center">ToDuo</a>
+      </div>
+    </nav>
     <div class="container s12">
       <div class="row valign-wrapper center-align">
         <div class="col valign">
           <div class="card signup-card deep-purple">
+            <br>
+            <i class="material-icons medium white-text">person</i>
             <div class="card-content white-text">
               <ul class="tabs tabs-transparent deep-purple">
                 <li class="tab"><a href="#signin">Sign In</a></li>
                 <li class="tab"><a class="active" href="#signup">Sign Up</a></li>
               </ul>
+              <br>
+              <div id="errorDisplay" style="display: none;">
+                <p id="errorMessage" class="red-text">Error</p>
+                <br>
+              </div>
               <!--Sign Up -->
               <div id="signup">
                 <div class="row">
                   <div class="input-field col s12">
-                    <input id="email" type="email" class="validate">
-                    <label for="email">Email</label>
+                    <input id="email_signup" type="email" class="validate">
+                    <label for="email_signup">Email</label>
                   </div>
                   <br>
                   <div class="row">
                     <div class="input-field col s12">
-                      <input id="password" type="password" class="validate">
+                      <input id="password_signup" type="password" class="validate">
                       <label for="password">Password</label>
                     </div>
                   </div>
                   <div class="row">
                     <div class="input-field col s12">
-                      <input id="repassword" type="password" class="validate">
+                      <input id="repassword_signup" type="password" class="validate">
                       <label for="password">Re-Enter Password</label>
                     </div>
                   </div>
                 </div>
                 <div class="card-action">
-                  <a class="waves-effect waves-light btn deep-purple accent-1" href="./dashboard.html">Sign Up</a>
+                  <a class="waves-effect waves-light btn deep-purple accent-1" href="javascript:;" onclick="signUp()">Sign Up</a>
                 </div>
               </div>
               <!-- Sign Up -->
@@ -51,18 +63,18 @@
               <div id="signin">
                 <div class="row">
                   <div class="input-field col s12">
-                    <input id="email" type="email" class="validate">
+                    <input id="email_signin" type="email" class="validate">
                     <label for="email">Email</label>
                   </div>
                   <div class="row">
                     <div class="input-field col s12">
-                      <input id="password" type="password" class="validate">
+                      <input id="password_signin" type="password" class="validate">
                       <label for="password">Password</label>
                     </div>
                   </div>
                 </div>
                 <div class="card-action">
-                  <a class="waves-effect waves-light btn deep-purple accent-1" href="./dashboard.html">Sign In</a>
+                  <a class="waves-effect waves-light btn deep-purple accent-1" href="javascript:;" onclick="signIn()">Sign In</a>
                 </div>
               </div>
               <!-- Sign In -->
@@ -74,5 +86,67 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <!--Firebase-->
+    <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBkUIm9kS7gb_uwjwQ8oz_Bm_t26o3R1s4",
+      authDomain: "toduo-kyletara.firebaseapp.com",
+      databaseURL: "https://toduo-kyletara.firebaseio.com",
+      projectId: "toduo-kyletara",
+      storageBucket: "toduo-kyletara.appspot.com",
+      messagingSenderId: "804014481520"
+    };
+    firebase.initializeApp(config);
+    </script>
+    <script>
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        var email = user.email;
+        var uid = user.uid;
+
+        //Console.log("User" + email + " Signed In");
+        window.location.replace("./dashboard.html");
+      } else {
+        // User is signed out.
+        //Console.log("User Not Signed In");
+      }
+    });
+    </script>
+    <script>
+    function signUp() {
+      var email = document.getElementById("email_signup").value;
+      var password = document.getElementById("password_signup").value;
+
+      if(password != document.getElementById("repassword_signup").value) {
+        document.getElementById("errorMessage").innerHTML = "Error: Passwords do not match";
+        document.getElementById("errorDisplay").setAttribute("style", "display: inline;");
+      } else {
+          firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorMessage = error.code;
+
+            document.getElementById("errorMessage").innerHTML = "Error: " + errorMessage;
+            document.getElementById("errorDisplay").setAttribute("style", "display: inline;");
+          });
+        }
+    }
+    function signIn() {
+      var email = document.getElementById("email_signin").value;
+      var password = document.getElementById("password_signin").value;
+
+      firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorMessage = error.code;
+
+        document.getElementById("errorMessage").innerHTML = "Error: " + errorMessage;
+                    document.getElementById("errorDisplay").setAttribute("style", "display: inline;");
+        //Console.log(errorMessage);
+      });
+    }
+    </script>
+    <!-- Firebase -->
   </body>
 </html>
