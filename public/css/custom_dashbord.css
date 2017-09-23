@@ -1,0 +1,20 @@
+.container  {
+  display: inline-flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 90pt;
+  width: 90;
+}
+.btn-checkbox {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  -webkit-transition: background-color .2s;
+  transition: background-color .2s;
+  
+  waves-effect;
+  waves-light;
+}
