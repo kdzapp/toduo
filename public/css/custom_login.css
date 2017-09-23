@@ -1,0 +1,16 @@
+.container  {
+  display: inline-flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 80%;
+  width: 100%;
+}
+
+.container .row {
+  margin: 0 auto;
+}
+
+.signup-card {
+ width: 250pt;
+}
