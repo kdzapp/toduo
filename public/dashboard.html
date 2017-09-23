@@ -11,17 +11,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
-  <body>
-    <h1>ToDuo</h1>
+  <body style="background-color:#ede7f6;">
+    <!--<h1 style="color:white">ToDuo</h1>-->
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
 
+     <nav class="nav-extended" style="background-color:#673ab7">
+    <div class="nav-wrapper">
+      <a class="brand-logo center"><h1>ToDuo</h1></a>
+      <ul id="nav-mobile">
+      </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="#test1">My Toduo</a></li>
+        <li class="tab"><a class="active" href="#test2">Test 2</a></li>
+        <li class="tab"><a href="#test4"><i class="large material-icons">add</i></a></li>
+      </ul>
+    </div>
+  </nav>
     <div class="row">
         <div class="col s12 m6">
           <div class="card deep-purple">
             <div class="card-content white-text">
-              <span class="card-title">Someone's Toduo</span>
+              <span class="card-title">My Toduo</span>
               <p>
               	<table>
               		<div class="highlight">
@@ -36,16 +50,72 @@
               		<tbody>
               			<tr>
               				<td>
-              					 
-              					<a class="waves-effect waves-light btn-flat btn-small"><i class="small material-icons white-text">check_box_outline_blank</i></a>
+              					<a class="btn-flat"><i class="material-icons white-text">check_box_outline_blank</i></a>
               				</td>
               				<td>9/23</td>
               				<td>Complete ToDuo Website</td>
-              			</tr>
+              			</tr> <tr>
               				<td><!--button-->
               				</td>
               				<td>9/23</td>
               				<td>Brag to Kyle</td>
+              			</tr> <tr>
+              				<td> </td>
+              				<td><div class="input-field"> 
+              					<input placeholder="Enter Date" id="data">
+              				</div></td>
+              				<td><div class="input-field"> 
+              					<input placeholder="Enter Todo Task" id="task">
+              				</div></td>
+              			</tr>
+              		</tbody>
+              	</div>
+              </div>
+              	</table>
+              </p>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s6">
+          <div class="card deep-purple">
+            <div class="card-content white-text">
+              <span class="card-title">Kyle's Toduo</span>
+              <p>
+              	<table>
+              		<div class="highlight">
+              			<div class="bordered">
+              		<thead>
+              			<tr>
+              				<th>Completed</th>
+              				<th>Date</th>
+              				<th>Task</th>
+              			</tr>
+              		</thead>
+              		<tbody>
+              			<tr>
+              				<td>
+              					<a class="btn-flat"><i class="material-icons white-text">check_box_outline_blank</i></a>
+              				</td>
+              				<td>9/23</td>
+              				<td>Complete ToDuo Website</td>
+              			</tr> <tr>
+              				<td><!--button-->
+              				</td>
+              				<td>9/23</td>
+              				<td>Brag to Kyle</td>
+              			</tr> <tr>
+              				<td> </td>
+              				<td><div class="input-field"> 
+              					<input placeholder="Enter Date" id="data">
+              				</div></td>
+              				<td><div class="input-field"> 
+              					<input placeholder="Enter Todo Task" id="task">
+              				</div></td>
+              			</tr>
               		</tbody>
               	</div>
               </div>
