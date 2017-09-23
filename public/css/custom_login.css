@@ -1,13 +1,3 @@
-body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-main {
-  flex: 1 0 auto;
-}
-
 .container  {
   display: inline-flex;
   position: absolute;
@@ -19,4 +9,8 @@ main {
 
 .container .row {
   margin: 0 auto;
+}
+
+.signup-card {
+ width: 250pt;
 }
