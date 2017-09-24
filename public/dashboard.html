@@ -1,131 +1,124 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="css/custom_dashboard.css"/>
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  </head>
+<head>
+	<!--Import Google Icon Font-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="css/custom_dashboard.css"/>
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
 
-  <body style="background-color:#ede7f6;">
-    <!--<h1 style="color:white">ToDuo</h1>-->
-    <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
+<body style="background-color:#ede7f6;">
+	<!--<h1 style="color:white">ToDuo</h1>-->
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
 
-     <nav class="nav-extended" style="background-color:#673ab7">
-    <div class="nav-wrapper">
-      <a class="brand-logo center"><h1>ToDuo</h1></a>
-      <ul id="nav-mobile">
-      </ul>
-    </div>
-    <div class="nav-content">
-      <ul class="tabs tabs-transparent">
-        <li class="tab"><a href="#test1">My Toduo</a></li>
-        <li class="tab"><a class="active" href="#test2">Test 2</a></li>
-        <li class="tab"><a href="#test4"><i class="large material-icons">add</i></a></li>
-        <li class="tab right"><a href="#test1">Sign Out</a></li>
-      </ul>
-    </div>
-  </nav>
-    <div class="row">
-        <div class="col s12 m6">
-          <div class="card deep-purple">
-            <div class="card-content white-text">
-              <span class="card-title">My Toduo</span>
-              <p>
-              	<table>
-              		<div class="highlight">
-              			<div class="bordered">
-              		<thead>
-              			<tr>
-              				<th>Completed</th>
-              				<th>Date</th>
-              				<th>Task</th>
-              			</tr>
-              		</thead>
-              		<tbody>
-              			<tr>
-              				<td>
-              					<a class="btn-flat"><i class="material-icons white-text">check_box_outline_blank</i></a>
-              				</td>
-              				<td>9/23</td>
-              				<td>Complete ToDuo Website</td>
-              			</tr> <tr>
-              				<td><!--button-->
-              				</td>
-              				<td>9/23</td>
-              				<td>Brag to Kyle</td>
-              			</tr> <tr>
-              				<td> </td>
-              				<td><div class="input-field"> 
-              					<input placeholder="Enter Date" id="data">
-              				</div></td>
-              				<td><div class="input-field"> 
-              					<input placeholder="Enter Todo Task" id="task">
-              				</div></td>
-              			</tr>
-              		</tbody>
-              	</div>
-              </div>
-              	</table>
-              </p>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col s6">
-          <div class="card deep-purple">
-            <div class="card-content white-text">
-              <span class="card-title">Kyle's Toduo</span>
-              <p>
-              	<table>
-              		<div class="highlight">
-              			<div class="bordered">
-              		<thead>
-              			<tr>
-              				<th>Completed</th>
-              				<th>Date</th>
-              				<th>Task</th>
-              			</tr>
-              		</thead>
-              		<tbody>
-              			<tr>
-              				<td>
-              					<a class="btn-flat"><i class="material-icons white-text">check_box_outline_blank</i></a>
-              				</td>
-              				<td>9/23</td>
-              				<td>Complete ToDuo Website</td>
-              			</tr> <tr>
-              				<td><!--button-->
-              				</td>
-              				<td>9/23</td>
-              				<td>Brag to Kyle</td>
-              			</tr> <tr>
-              				<td> </td>
-              				<td><div class="input-field"> 
-              					<input placeholder="Enter Date" id="data">
-              				</div></td>
-              				<td><div class="input-field"> 
-              					<input placeholder="Enter Todo Task" id="task">
-              				</div></td>
-              			</tr>
-              		</tbody>
-              	</div>
-              </div>
-              	</table>
-              </p>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  </body>
+	<!-- Tool Bar -->
+	<nav class="nav-extended" style="background-color:#673ab7">
+		<div class="nav-wrapper">
+			<a class="brand-logo center"><h1>ToDuo</h1></a>
+			<div class="row">
+				<ul id="nav-mobile">
+				</ul>
+			</div>
+		</div>
+
+		<div class="nav-content">
+			<div class="row">
+				<ul class="tabs tabs-transparent">
+					<li class="tab"><a href="#test1">My Toduo</a></li>
+					<li class="tab"><a class="active" href="#test2">Test 2</a></li>
+					<li class="tab"><a href="#test4"><i class="large material-icons">add</i></a></li>
+					<li class="tab right"><div class="valign-wrapper"><a href="#test1"><i class="large material-icons right">lock_outline</i>Sign Out</a></div></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!--TODO LISTs CONTAINER-->
+	<div class="row">
+		<div class="col s12 m6">
+			<div class="card deep-purple">
+				<div class="card-content white-text">
+					<span class="card-title">My Toduo</span>
+					<table>
+						<div class="highlight">
+							<div class="bordered">
+								<!--TODO HEAD-->
+								<thead>
+									<tr>
+										<th style="width: 70pt">Completed</th>
+										<th style="width: 80pt">Date</th>
+										<th style="width: 260pt">Task</th>
+									</tr>
+								</thead>
+
+								<!--TODO BODY-->
+								<tbody>
+									<tr>
+										<td>
+											<a class="btn-flat" onclick="checkButton(this)">
+												<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
+											</a>
+										</td>
+
+										<td>
+											
+												<input onkeyup="saveInput()" type="text" name="inputDate" placeholder="Enter Date"></input>
+											
+										</td> 
+
+										<td>
+											<form>
+												<input type="text" name="inputTask" placeholder="Enter Todo Task"></input>
+											</form>
+										</td>
+									</tr> 
+								</tbody>
+							</div>
+						</div>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+		//Check Button
+		function checkButton(element) {
+			if(element.children[0].innerHTML == "check_box")
+			{
+				element.children[0].innerHTML = "check_box_outline_blank";
+			} else {
+				element.children[0].innerHTML = "check_box";
+			}
+		}
+
+	/*function addNewListRow() {
+
+		if (event.keyCode == 13) {
+			var userInput = document.getElementById("task");
+			var newRow = document.createElement("TR");
+			var newTask = document.createElement("TD");
+			newTask.setAttribute('id', "addedTask");
+			newRow.appendChild(newTask);
+			newTask.appendChild(document.createTextNode("hello"));
+		}
+	}*/
+
+	function saveInput() {
+		var userInput = document.getElementById("inputDate");
+		var textDate = document.createTextNode(userInput);
+		element.children[0].innerHTML = userInput;
+	}
+
+	</script>
+
+</body>
 </html>
