@@ -222,8 +222,8 @@
 				var uid = user.uid;
 
 				console.log("User" + email + " Signed In");
-				firebase.database().ref('toduos/' + uid + '/').set({
-					email: email,
+				firebase.database().ref('toduos/' + uid + '/email/').set({
+					email,
 				});
 
 				//Fill List
