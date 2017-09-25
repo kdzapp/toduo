@@ -107,6 +107,10 @@
         var email = user.email;
         var uid = user.uid;
 
+        firebase.database().ref('toduos/' + uid + '/').set({
+          email: email,
+        });
+
         //Console.log("User" + email + " Signed In");
         window.location.replace("./dashboard.html");
       } else {

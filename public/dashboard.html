@@ -197,7 +197,7 @@
 
 				newBar.className = "tab";
 				const tabElement = `
-					<a id="defaultList" class="active">${userEmail}</a>
+					<a class="active">${userEmail}</a>
 				`;
 				newBar.innerHTML = tabElement;
 				navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
@@ -219,8 +219,12 @@
 			if (user) {
 				// User is signed in.
 				var email = user.email;
-				//var uid = user.uid;
+				var uid = user.uid;
+
 				console.log("User" + email + " Signed In");
+				firebase.database().ref('toduos/' + uid + '/').set({
+					email: email,
+				});
 
 				//Fill List
 				firebase.database().ref('toduos/' + user.uid + '/todos').once('value').then(function(snapshot) {
@@ -234,6 +238,8 @@
 				});
 
 				//Fill Users
+				document.getElementById("defaultList").innerHTML = user.email;
+
 				firebase.database().ref('toduos/' + user.uid + '/friends').once('value').then(function(snapshot) {
 					snapshot.forEach(function(friends) {
 						friend = friends.val();
@@ -251,8 +257,10 @@
 			var user = firebase.auth().currentUser;
 			var friend = document.getElementById("addFriend").value;
 
-			var friendsRef = firebase.database().ref('toduos/' + user.uid + '/friends');
-			friendsRef.push(friend);
+			if(friend == user.uid) {
+				//ERROR, THIS IS YOUR UID//
+				return;
+			}
 
 			document.getElementById("addFriend").value = "";
 
@@ -263,11 +271,14 @@
 
 				newBar.className = "tab";
 				const tabElement = `
-					<a id="defaultList" class="active">${userEmail}</a>
+					<a class="active">${userEmail}</a>
 				`;
 				newBar.innerHTML = tabElement;
 				navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
 			});
+
+			var friendsRef = firebase.database().ref('toduos/' + user.uid + '/friends');
+			friendsRef.push(friend);
 
 			$('#AddToDuo').modal('close');
 		}
