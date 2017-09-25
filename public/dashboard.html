@@ -269,16 +269,20 @@
 				var newBar = document.createElement("li");
 				var userEmail = snapshot.val();
 
-				newBar.className = "tab";
-				const tabElement = `
-					<a class="active">${userEmail}</a>
-				`;
-				newBar.innerHTML = tabElement;
-				navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
-			});
+				if(userEmail != null) {
+					newBar.className = "tab";
+					const tabElement = `
+						<a class="active">${userEmail}</a>
+					`;
+					newBar.innerHTML = tabElement;
+					navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
 
-			var friendsRef = firebase.database().ref('toduos/' + user.uid + '/friends');
-			friendsRef.push(friend);
+					var friendsRef = firebase.database().ref('toduos/' + user.uid + '/friends');
+					friendsRef.push(friend);
+				} else {
+					//ERROR, INVALID UID//
+				}
+			});
 
 			$('#AddToDuo').modal('close');
 		}
