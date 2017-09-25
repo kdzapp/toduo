@@ -26,10 +26,9 @@
 				</ul>
 			</div>
 		</div>
-
 		<div class="nav-content">
 			<div class="row">
-				<ul class="tabs tabs-transparent">
+				<ul id="tabList"class="tabs tabs-transparent">
 					<li class="tab"><a id="defaultList" class="active">My Toduo</a></li>
 					<li class="tab"><a class="modal-trigger" href="#AddToDuo"><i class="large material-icons">add</i></a></li>
 					<li class="tab right">
@@ -164,6 +163,47 @@
 			//-2 for the last element is editable one ()
 			myList.insertBefore(todo, myList.children[0]);
 		}
+		//Add Todo
+		function fillTodo(enteredTodo, enteredDate) {
+
+			var myList = document.getElementById("my_todolist");
+			var todo = document.createElement("tr");
+
+			const todoElement = `
+				<td>
+					<a class="btn-flat" onclick="checkButton(this)">
+						<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
+					</a>
+				</td>
+				<td>
+					<p>${enteredDate}</p>
+				</td>
+				<td>
+					<p>${enteredTodo}</p>
+				</td>
+			`;
+
+			todo.innerHTML = todoElement;
+
+			//-2 for the last element is editable one ()
+			myList.insertBefore(todo, myList.children[0]);
+		}
+
+		function fillTab(userId) {
+			firebase.database().ref('toduos/' + userId + '/email').once('value').then(function(snapshot) {
+				var navBar = document.getElementById("tabList");
+				var newBar = document.createElement("li");
+				var userEmail = snapshot.val();
+
+				newBar.className = "tab";
+				const tabElement = `
+					<a id="defaultList" class="active">${userEmail}</a>
+				`;
+				newBar.innerHTML = tabElement;
+				navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
+			});
+		}
+
 
 		//Sign Out Button
 		function signOut() {
@@ -178,12 +218,31 @@
 		firebase.auth().onAuthStateChanged(function(user) {
 			if (user) {
 				// User is signed in.
-				//var email = user.email;
+				var email = user.email;
 				//var uid = user.uid;
-				//Console.log("User" + email + " Signed In");
+				console.log("User" + email + " Signed In");
+
+				//Fill List
+				firebase.database().ref('toduos/' + user.uid + '/todos').once('value').then(function(snapshot) {
+					snapshot.forEach(function(todoDates) {
+						var enteredDate = todoDates.key;
+						todoDates.forEach(function(todoElements) {
+							var todoElement = todoElements.key;
+							fillTodo(todoElement, enteredDate);
+						});
+					});
+				});
+
+				//Fill Users
+				firebase.database().ref('toduos/' + user.uid + '/friends').once('value').then(function(snapshot) {
+					snapshot.forEach(function(friends) {
+						friend = friends.val();
+						fillTab(friend);
+					});
+				});
 			} else {
 				// User is signed out.
-				//Console.log("User Not Signed In");
+				console.log("User Not Signed In");
 				window.location.replace("./index.html");
 			}
 		});
@@ -194,6 +253,22 @@
 
 			var friendsRef = firebase.database().ref('toduos/' + user.uid + '/friends');
 			friendsRef.push(friend);
+
+			document.getElementById("addFriend").value = "";
+
+			firebase.database().ref('toduos/' + friend + '/email').once('value').then(function(snapshot) {
+				var navBar = document.getElementById("tabList");
+				var newBar = document.createElement("li");
+				var userEmail = snapshot.val();
+
+				newBar.className = "tab";
+				const tabElement = `
+					<a id="defaultList" class="active">${userEmail}</a>
+				`;
+				newBar.innerHTML = tabElement;
+				navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
+			});
+
 			$('#AddToDuo').modal('close');
 		}
 
