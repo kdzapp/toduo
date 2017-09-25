@@ -17,7 +17,6 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 
-
 	<!-- Tool Bar -->
 	<nav class="nav-extended" style="background-color:#673ab7">
 		<div class="nav-wrapper">
@@ -31,21 +30,36 @@
 		<div class="nav-content">
 			<div class="row">
 				<ul class="tabs tabs-transparent">
-					<li class="tab"><a href="#test1">My Toduo</a></li>
-					<li class="tab"><a class="active" href="#test2">Test 2</a></li>
-					<li class="tab"><a href="#test4"><i class="large material-icons">add</i></a></li>
-					<li class="tab right"><div class="valign-wrapper"><a href="#test1"><i class="large material-icons right">lock_outline</i>Sign Out</a></div></li>
+					<li class="tab"><a id="defaultList" class="active">My Toduo</a></li>
+					<li class="tab"><a class="modal-trigger" href="#AddToDuo"><i class="large material-icons">add</i></a></li>
+					<li class="tab right">
+						<a onclick="signOut()"> Sign Out </a>
+					</li>
 				</ul>
 			</div>
 		</div>
 	</nav>
+
+	<!-- Modal Structure -->
+	<div class="modal modal-fixed-footer" style="max-height:250px;" id="AddToDuo">
+		<div class="modal-content center">
+			<h4>Add A Friend's ToDuo</h4>
+			<h5 id="yourUid"></h5>
+			<input class="s12" type="text" id="addFriend" placeholder="Enter User ID to Add">
+		</div>
+		<div class="modal-footer">
+			<a onclick="addFriend()" class="modal-action modal-close waves-effect waves-green btn-flat ">Add</a>
+			<a onclick="cancelModal()" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		</div>
+	</div>
+
 
 	<!--TODO LISTs CONTAINER-->
 	<div class="row">
 		<div class="col s12 m6">
 			<div class="card deep-purple">
 				<div class="card-content white-text">
-					<span class="card-title">My Toduo</span>
+					<span class="card-title" id="personalList">My Toduo</span>
 					<table>
 						<div class="highlight">
 							<div class="bordered">
@@ -53,41 +67,52 @@
 								<thead>
 									<tr>
 										<th style="width: 70pt">Completed</th>
-										<th style="width: 80pt">Date</th>
+										<th style="width: 120pt">Date</th>
 										<th style="width: 260pt">Task</th>
 									</tr>
 								</thead>
 
 								<!--TODO BODY-->
-								<tbody>
+								<tbody id="my_todolist">
 									<tr>
-										<td>
-											<a class="btn-flat" onclick="checkButton(this)">
-												<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
+										<td class="center-align">
+											<a class="btn-floating waves-effect waves-light deep-purple accent-1" onclick="addTodo()">
+												<i class="medium material-icons white-text">add</i>
 											</a>
 										</td>
-
 										<td>
-											
-												<input onkeyup="saveInput()" type="text" name="inputDate" placeholder="Enter Date"></input>
-											
-										</td> 
-
-										<td>
-											<form>
-												<input type="text" name="inputTask" placeholder="Enter Todo Task"></input>
-											</form>
+												<input type="text" class="datepicker" id="inputDate" placeholder="Pick Date">
 										</td>
-									</tr> 
+										<td>
+												<input type="text" id="inputTask" placeholder="Create ToDuo Task">
+										</td>
+									</tr>
 								</tbody>
 							</div>
 						</div>
 					</table>
+					<div class="card-action center-align">
+						<a class="waves-effect waves-light btn deep-purple accent-1" href="javascript:;">Show History</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+	<script>
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyBkUIm9kS7gb_uwjwQ8oz_Bm_t26o3R1s4",
+		authDomain: "toduo-kyletara.firebaseapp.com",
+		databaseURL: "https://toduo-kyletara.firebaseio.com",
+		projectId: "toduo-kyletara",
+		storageBucket: "toduo-kyletara.appspot.com",
+		messagingSenderId: "804014481520"
+	};
+	firebase.initializeApp(config);
+	</script>
 
+	<!-- Custom JS -->
 	<script type="text/javascript">
 
 		//Check Button
@@ -100,24 +125,113 @@
 			}
 		}
 
-	/*function addNewListRow() {
+		//Add Todo
+		function addTodo() {
+			//Get User Information
+			var user = firebase.auth().currentUser;
 
-		if (event.keyCode == 13) {
-			var userInput = document.getElementById("task");
-			var newRow = document.createElement("TR");
-			var newTask = document.createElement("TD");
-			newTask.setAttribute('id', "addedTask");
-			newRow.appendChild(newTask);
-			newTask.appendChild(document.createTextNode("hello"));
+			var myList = document.getElementById("my_todolist");
+			var todo = document.createElement("tr");
+
+			var enteredDate = document.getElementById("inputDate").value;
+			var enteredTodo = document.getElementById("inputTask").value;
+
+			if(enteredTodo == "" || enteredDate == "") {
+				//Alert User They Must Have TODO
+				return;
+			}
+
+			document.getElementById("inputDate").value = "";
+			document.getElementById("inputTask").value = "";
+
+			const todoElement = `
+				<td>
+					<a class="btn-flat" onclick="checkButton(this)">
+						<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
+					</a>
+				</td>
+				<td>
+					<p>${enteredDate}</p>
+				</td>
+				<td>
+					<p>${enteredTodo}</p>
+				</td>
+			`;
+
+			todo.innerHTML = todoElement;
+  		firebase.database().ref('toduos/' + user.uid + '/todos/' + enteredDate + '/' + enteredTodo).set(0);
+
+			//-2 for the last element is editable one ()
+			myList.insertBefore(todo, myList.children[0]);
 		}
-	}*/
 
-	function saveInput() {
-		var userInput = document.getElementById("inputDate");
-		var textDate = document.createTextNode(userInput);
-		element.children[0].innerHTML = userInput;
-	}
+		//Sign Out Button
+		function signOut() {
+			firebase.auth().signOut().then(function() {
 
+			}).catch(function(error) {
+					alert(error.code);
+			});
+		}
+
+		//Auth Changes
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+				// User is signed in.
+				//var email = user.email;
+				//var uid = user.uid;
+				//Console.log("User" + email + " Signed In");
+			} else {
+				// User is signed out.
+				//Console.log("User Not Signed In");
+				window.location.replace("./index.html");
+			}
+		});
+
+		function addFriend() {
+			var user = firebase.auth().currentUser;
+			var friend = document.getElementById("addFriend").value;
+
+			var friendsRef = firebase.database().ref('toduos/' + user.uid + '/friends');
+			friendsRef.push(friend);
+			$('#AddToDuo').modal('close');
+		}
+
+		function cancelModal() {
+			document.getElementById("defaultList").className += "active";
+			$('#AddToDuo').modal('close')
+		}
+
+	</script>
+
+	<!--Date Picker-->
+	<script>
+	$('.datepicker').pickadate({
+		selectMonths: true, // Creates a dropdown to control month
+		selectYears: 15, // Creates a dropdown of 15 years to control year,
+		today: 'Today',
+		clear: 'Clear',
+		close: 'Ok',
+		closeOnSelect: false // Close upon selecting a date,
+	});
+
+
+  $('.modal').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+				var yourId = firebase.auth().currentUser.uid;
+				document.getElementById("yourUid").innerHTML = "Your ID: " + yourId;
+      },
+      complete: function() {
+
+			} // Callback for Modal close
+    }
+  );
 	</script>
 
 </body>

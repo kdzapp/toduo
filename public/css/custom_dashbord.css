@@ -14,7 +14,12 @@
   cursor: pointer;
   -webkit-transition: background-color .2s;
   transition: background-color .2s;
-  
+
   waves-effect;
   waves-light;
+}
+
+.modal {
+  max-height: 100px !important;
+  max-width: 100px !important;
 }
