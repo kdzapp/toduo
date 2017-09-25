@@ -222,7 +222,7 @@
 				var uid = user.uid;
 
 				console.log("User" + email + " Signed In");
-				firebase.database().ref('toduos/' + uid + '/email/').set({
+				firebase.database().ref('toduos/' + uid + '/').update({
 					email,
 				});
 
