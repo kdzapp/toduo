@@ -29,7 +29,7 @@
 		<div class="nav-content">
 			<div class="row">
 				<ul id="tabList"class="tabs tabs-transparent">
-					<li class="tab"><a id="defaultList" class="active">My Toduo</a></li>
+					<li class="tab"><a id="defaultList" class="active">example@toduo.com</a></li>
 					<li class="tab"><a class="modal-trigger" href="#AddToDuo"><i class="large material-icons">add</i></a></li>
 					<li class="tab right">
 						<a onclick="signOut()"> Sign Out </a>
@@ -97,6 +97,7 @@
 			</div>
 		</div>
 	</div>
+
 	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 	<script>
 	// Initialize Firebase
@@ -114,13 +115,27 @@
 	<!-- Custom JS -->
 	<script type="text/javascript">
 
+		function removeElement(element) {
+			var userid = firebase.auth().currentUser.uid;
+
+			var date = element.getElementsByClassName("todoElement")[0].innerHTML;
+			var todo = element.getElementsByClassName("todoElement")[1].innerHTML;
+
+			firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(1);
+
+			element.remove();
+		}
+
 		//Check Button
 		function checkButton(element) {
 			if(element.children[0].innerHTML == "check_box")
 			{
 				element.children[0].innerHTML = "check_box_outline_blank";
-			} else {
+				window.clearTimeout(checkButton.theDeleteFunction);
+			}
+			else {
 				element.children[0].innerHTML = "check_box";
+				checkButton.theDeleteFunction  = window.setTimeout(function(){ removeElement(element.parentNode.parentNode); }, 3000);
 			}
 		}
 
@@ -150,10 +165,10 @@
 					</a>
 				</td>
 				<td>
-					<p>${enteredDate}</p>
+					<p class="todoElement">${enteredDate}</p>
 				</td>
 				<td>
-					<p>${enteredTodo}</p>
+					<p class="todoElement">${enteredTodo}</p>
 				</td>
 			`;
 
@@ -176,10 +191,10 @@
 					</a>
 				</td>
 				<td>
-					<p>${enteredDate}</p>
+					<p class="todoElement">${enteredDate}</p>
 				</td>
 				<td>
-					<p>${enteredTodo}</p>
+					<p class="todoElement">${enteredTodo}</p>
 				</td>
 			`;
 
@@ -232,7 +247,9 @@
 						var enteredDate = todoDates.key;
 						todoDates.forEach(function(todoElements) {
 							var todoElement = todoElements.key;
-							fillTodo(todoElement, enteredDate);
+							if(todoElements.val() != 1) {
+								fillTodo(todoElement, enteredDate);
+							}
 						});
 					});
 				});
