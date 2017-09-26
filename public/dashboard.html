@@ -92,8 +92,27 @@
 						</div>
 					</table>
 					<div class="card-action center-align">
-						<a class="waves-effect waves-light btn deep-purple accent-1" href="javascript:;">Show History</a>
+						<a class="waves-effect waves-light btn deep-purple accent-1" id="myHistory" onclick="toggleMyHistory()" href="javascript:;">Show History</a>
 					</div>
+					<table id="myHistoryToggle" style="display:none;">
+						<div class="highlight">
+							<div class="bordered">
+								<!--HISTOY BODY-->
+								<thead>
+									<tr>
+										<th style="width: 70pt">Completed</th>
+										<th style="width: 120pt">Date</th>
+										<th style="width: 260pt">Task</th>
+									</tr>
+								</thead>
+
+								<!--HISTOY BODY-->
+								<tbody name="my_historyList" id="my_historyList">
+								</tbody>
+
+							</div>
+						</div>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -121,8 +140,27 @@
 						</div>
 					</table>
 					<div class="card-action center-align">
-						<a class="waves-effect waves-light btn deep-purple accent-1" href="javascript:;">Show History</a>
+						<a class="waves-effect waves-light btn deep-purple accent-1" id="friendHistory" onclick="toggleFriendHistory()" href="javascript:;">Show History</a>
 					</div>
+					<table id="friendHistoryToggle" style="display:none;">
+						<div class="highlight">
+							<div class="bordered">
+								<!--HISTOY BODY-->
+								<thead>
+									<tr>
+										<th style="width: 70pt">Completed</th>
+										<th style="width: 120pt">Date</th>
+										<th style="width: 260pt">Task</th>
+									</tr>
+								</thead>
+
+								<!--HISTOY BODY-->
+								<tbody name="friends_historyList" id="friends_historyList">
+								</tbody>
+
+							</div>
+						</div>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -144,6 +182,30 @@
 
 	<!-- Custom JS -->
 	<script type="text/javascript">
+
+		function toggleMyHistory() {
+			var history = document.getElementById("myHistoryToggle");
+			var display = window.getComputedStyle(history).getPropertyValue("display");
+			console.log(display);
+			if(display == "none") {
+				history.setAttribute("style", "display:inline;");
+			}
+			else {
+				history.setAttribute("style", "display:none;");
+			}
+		}
+
+		function toggleFriendHistory() {
+			var history = document.getElementById("friendHistoryToggle");
+			var display = window.getComputedStyle(history).getPropertyValue("display");
+
+			if(display == "none") {
+				history.setAttribute("style", "display:inline;");
+			}
+			else {
+				history.setAttribute("style", "display:none;");
+			}
+		}
 
 		function removeElement(element) {
 			if(element.parentNode.getAttribute("name") == "friends_todoList") {
@@ -301,6 +363,8 @@
 							var todoElement = todoElements.key;
 							if(todoElements.val() != 1) {
 								fillTodo(todoElement, enteredDate, "friends_todoList");
+							} else {
+								fillTodo(todoElement, enteredDate, "friends_historyList");
 							}
 						});
 					});
@@ -328,6 +392,8 @@
 							var todoElement = todoElements.key;
 							if(todoElements.val() != 1) {
 								fillTodo(todoElement, enteredDate, "my_todolist");
+							} else {
+								fillTodo(todoElement, enteredDate, "my_historyList")
 							}
 						});
 					});
