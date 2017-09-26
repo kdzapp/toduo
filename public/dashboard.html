@@ -262,7 +262,6 @@
 			document.getElementById("inputTask").value = "";
 
 			const todoElement = `
-				</td>
 				<td>
 					<p class="todoElement">${enteredDate}</p>
 				</td>
@@ -273,6 +272,7 @@
 					<a class="btn-flat" onclick="checkButton(this)">
 						<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
 					</a>
+				</td>
 			`;
 
 			todo.innerHTML = todoElement;
@@ -315,7 +315,7 @@
 
 				newBar.className = "tab";
 				const tabElement = `
-					<a class="active" id="${friend}" onclick="setDuo(this)">${userEmail}</a>
+					<a class="active" id="${userId}" onclick="setDuo(this)">${userEmail}</a>
 				`;
 				newBar.innerHTML = tabElement;
 				navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
