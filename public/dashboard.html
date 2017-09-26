@@ -65,25 +65,25 @@
 								<!--TODO HEAD-->
 								<thead>
 									<tr>
-										<th style="width: 70pt">Completed</th>
 										<th style="width: 120pt">Date</th>
 										<th style="width: 260pt">Task</th>
+										<th style="width: 70pt">Completed</th>
 									</tr>
 								</thead>
 
 								<!--TODO BODY-->
 								<tbody name="my_todolist" id="my_todolist">
 									<tr>
-										<td class="center-align">
-											<a class="btn-floating waves-effect waves-light deep-purple accent-1" onclick="addTodo()">
-												<i class="medium material-icons white-text">add</i>
-											</a>
-										</td>
 										<td>
 												<input type="text" class="datepicker" id="inputDate" placeholder="Pick Date">
 										</td>
 										<td>
 												<input type="text" id="inputTask" placeholder="Create ToDuo Task">
+										</td>
+										<td class="center-align">
+											<a class="btn-floating waves-effect waves-light deep-purple accent-1" onclick="addTodo()">
+												<i class="medium material-icons white-text">add</i>
+											</a>
 										</td>
 									</tr>
 								</tbody>
@@ -126,9 +126,9 @@
 								<!--TODO HEAD-->
 								<thead>
 									<tr>
-										<th style="width: 70pt">Completed</th>
 										<th style="width: 120pt">Date</th>
 										<th style="width: 260pt">Task</th>
+										<th style="width: 70pt">Completed</th>
 									</tr>
 								</thead>
 
@@ -148,9 +148,9 @@
 								<!--HISTOY BODY-->
 								<thead>
 									<tr>
-										<th style="width: 70pt">Completed</th>
 										<th style="width: 120pt">Date</th>
 										<th style="width: 260pt">Task</th>
+										<th style="width: 70pt">Completed</th>
 									</tr>
 								</thead>
 
@@ -262,10 +262,6 @@
 			document.getElementById("inputTask").value = "";
 
 			const todoElement = `
-				<td>
-					<a class="btn-flat" onclick="checkButton(this)">
-						<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
-					</a>
 				</td>
 				<td>
 					<p class="todoElement">${enteredDate}</p>
@@ -273,6 +269,10 @@
 				<td>
 					<p class="todoElement">${enteredTodo}</p>
 				</td>
+				<td class="center-align">
+					<a class="btn-flat" onclick="checkButton(this)">
+						<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
+					</a>
 			`;
 
 			todo.innerHTML = todoElement;
@@ -289,15 +289,15 @@
 
 			const todoElement = `
 				<td>
-					<a class="btn-flat" onclick="checkButton(this)">
-						<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
-					</a>
-				</td>
-				<td>
 					<p class="todoElement">${enteredDate}</p>
 				</td>
 				<td>
 					<p class="todoElement">${enteredTodo}</p>
+				</td>
+				<td class="center-align">
+					<a class="btn-flat" onclick="checkButton(this)">
+						<i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
+					</a>
 				</td>
 			`;
 
