@@ -14,3 +14,13 @@
 .signup-card {
  width: 250pt;
 }
+
+.hide-mobile {
+}
+
+
+@media only screen and (max-width: 768px) {
+	.hide-mobile {
+		display: none;
+	}
+}
