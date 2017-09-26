@@ -55,7 +55,7 @@
 
 	<!--TODO LISTs CONTAINER-->
 	<div class="row">
-		<div class="col s12 m6" id="myTodoCard">
+		<div class="col s12 m12" id="myTodoCard">
 			<div class="card deep-purple">
 				<div class="card-content white-text">
 					<span class="card-title" id="personalList">My Toduo</span>
@@ -72,7 +72,7 @@
 								</thead>
 
 								<!--TODO BODY-->
-								<tbody id="my_todolist">
+								<tbody name="my_todolist" id="my_todolist">
 									<tr>
 										<td class="center-align">
 											<a class="btn-floating waves-effect waves-light deep-purple accent-1" onclick="addTodo()">
@@ -100,7 +100,7 @@
 		<div class="col s12 m6" id="friendTodoCard" style="display:none;">
 			<div class="card deep-purple">
 				<div class="card-content white-text">
-					<span class="card-title" id="personalList">My Toduo</span>
+					<span class="card-title">Their Toduo</span>
 					<table>
 						<div class="highlight">
 							<div class="bordered">
@@ -114,7 +114,7 @@
 								</thead>
 
 								<!--TODO BODY-->
-								<tbody id="friends_todoList">
+								<tbody name="friends_todoList" id="friends_todoList">
 								</tbody>
 
 							</div>
@@ -146,14 +146,25 @@
 	<script type="text/javascript">
 
 		function removeElement(element) {
-			var userid = firebase.auth().currentUser.uid;
+			if(element.parentNode.getAttribute("name") == "friends_todoList") {
+				var userid = element.parentNode.id;
 
-			var date = element.getElementsByClassName("todoElement")[0].innerHTML;
-			var todo = element.getElementsByClassName("todoElement")[1].innerHTML;
+				var date = element.getElementsByClassName("todoElement")[0].innerHTML;
+				var todo = element.getElementsByClassName("todoElement")[1].innerHTML;
 
-			firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(1);
+				firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(1);
 
-			element.remove();
+				element.remove();
+			} else {
+				var userid = firebase.auth().currentUser.uid;
+
+				var date = element.getElementsByClassName("todoElement")[0].innerHTML;
+				var todo = element.getElementsByClassName("todoElement")[1].innerHTML;
+
+				firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(1);
+
+				element.remove();
+			}
 		}
 
 		//Check Button
@@ -165,7 +176,7 @@
 			}
 			else {
 				element.children[0].innerHTML = "check_box";
-				checkButton.theDeleteFunction  = window.setTimeout(function(){ removeElement(element.parentNode.parentNode); }, 3000);
+				checkButton.theDeleteFunction = window.setTimeout(function(){ removeElement(element.parentNode.parentNode); }, 3000);
 			}
 		}
 
@@ -211,7 +222,7 @@
 		//Add Todo
 		function fillTodo(enteredTodo, enteredDate, todoList) {
 
-			var myList = document.getElementById(todoList);
+			var myList = document.getElementsByName(todoList)[0];
 			var todo = document.createElement("tr");
 
 			const todoElement = `
@@ -259,25 +270,31 @@
 			});
 		}
 
-		function clearTodo(idOfList) {
-			var myList = document.getElementById(idOfList);
+		function clearTodo(nameOfList) {
+			var myList = document.getElementsByName(nameOfList)[0];
 
 			while(myList.hasChildNodes()) {
 				myList.removeChild(myList.lastChild);
 			}
 		}
 
-		function setDuo(element) {
 
+		function setDuo(element) {
 			clearTodo("friends_todoList");
 			var friendUid = element.id;
 
 			if(friendUid == "defaultList") {
 				document.getElementById("friendTodoCard").setAttribute("style", "display:none;");
+				document.getElementById("myTodoCard").className = "col s12 m12";
 			}
 			else {
 				document.getElementById("friendTodoCard").setAttribute("style", "display:flex;");
-				firebase.database().ref('toduos/' + friendUid + '/todos').once('value').then(function(snapshot) {
+				document.getElementById("myTodoCard").className = "col s12 m6";
+
+				document.getElementsByName("friends_todoList")[0].id = friendUid;
+
+				firebase.database().ref('toduos/' + friendUid + '/todos').on('value', function(snapshot) {
+					clearTodo("friends_todoList");
 					snapshot.forEach(function(todoDates) {
 						var enteredDate = todoDates.key;
 						todoDates.forEach(function(todoElements) {
