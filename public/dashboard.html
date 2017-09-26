@@ -100,9 +100,9 @@
 								<!--HISTOY BODY-->
 								<thead>
 									<tr>
-										<th style="width: 70pt">Completed</th>
 										<th style="width: 120pt">Date</th>
 										<th style="width: 260pt">Task</th>
+										<th style="width: 70pt">Completed</th>
 									</tr>
 								</thead>
 
@@ -281,7 +281,7 @@
 			//-2 for the last element is editable one ()
 			myList.insertBefore(todo, myList.children[0]);
 		}
-		//Add Todo
+		//Fill Todo
 		function fillTodo(enteredTodo, enteredDate, todoList) {
 
 			var myList = document.getElementsByName(todoList)[0];
@@ -301,7 +301,26 @@
 				</td>
 			`;
 
-			todo.innerHTML = todoElement;
+			const historyTodoElement = `
+				<td>
+					<p class="todoElement">${enteredDate}</p>
+				</td>
+				<td>
+					<p class="todoElement">${enteredTodo}</p>
+				</td>
+				<td class="center-align">
+					<a class="btn-flat">
+						<i class="material-icons white-text" id="checkBox">check_box</i>
+					</a>
+				</td>
+			`;
+
+			if(todoList == "friends_historyList" || todoList == "my_historyList") {
+				todo.innerHTML = historyTodoElement;
+			}
+			else {
+				todo.innerHTML = todoElement;
+			}
 
 			//-2 for the last element is editable one ()
 			myList.insertBefore(todo, myList.children[0]);
