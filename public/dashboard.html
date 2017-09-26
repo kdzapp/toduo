@@ -29,7 +29,7 @@
 		<div class="nav-content">
 			<div class="row">
 				<ul id="tabList"class="tabs tabs-transparent">
-					<li class="tab"><a id="defaultList" class="active">example@toduo.com</a></li>
+					<li class="tab"><a id="defaultList" class="active" onclick="setDuo(this)">example@toduo.com</a></li>
 					<li class="tab"><a class="modal-trigger" href="#AddToDuo"><i class="large material-icons">add</i></a></li>
 					<li class="tab right">
 						<a onclick="signOut()"> Sign Out </a>
@@ -55,7 +55,7 @@
 
 	<!--TODO LISTs CONTAINER-->
 	<div class="row">
-		<div class="col s12 m6">
+		<div class="col s12 m6" id="myTodoCard">
 			<div class="card deep-purple">
 				<div class="card-content white-text">
 					<span class="card-title" id="personalList">My Toduo</span>
@@ -87,6 +87,36 @@
 										</td>
 									</tr>
 								</tbody>
+
+							</div>
+						</div>
+					</table>
+					<div class="card-action center-align">
+						<a class="waves-effect waves-light btn deep-purple accent-1" href="javascript:;">Show History</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col s12 m6" id="friendTodoCard" style="display:none;">
+			<div class="card deep-purple">
+				<div class="card-content white-text">
+					<span class="card-title" id="personalList">My Toduo</span>
+					<table>
+						<div class="highlight">
+							<div class="bordered">
+								<!--TODO HEAD-->
+								<thead>
+									<tr>
+										<th style="width: 70pt">Completed</th>
+										<th style="width: 120pt">Date</th>
+										<th style="width: 260pt">Task</th>
+									</tr>
+								</thead>
+
+								<!--TODO BODY-->
+								<tbody id="friends_todoList">
+								</tbody>
+
 							</div>
 						</div>
 					</table>
@@ -179,9 +209,9 @@
 			myList.insertBefore(todo, myList.children[0]);
 		}
 		//Add Todo
-		function fillTodo(enteredTodo, enteredDate) {
+		function fillTodo(enteredTodo, enteredDate, todoList) {
 
-			var myList = document.getElementById("my_todolist");
+			var myList = document.getElementById(todoList);
 			var todo = document.createElement("tr");
 
 			const todoElement = `
@@ -212,7 +242,7 @@
 
 				newBar.className = "tab";
 				const tabElement = `
-					<a class="active">${userEmail}</a>
+					<a class="active" id="${friend}" onclick="setDuo(this)">${userEmail}</a>
 				`;
 				newBar.innerHTML = tabElement;
 				navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
@@ -227,6 +257,38 @@
 			}).catch(function(error) {
 					alert(error.code);
 			});
+		}
+
+		function clearTodo(idOfList) {
+			var myList = document.getElementById(idOfList);
+
+			while(myList.hasChildNodes()) {
+				myList.removeChild(myList.lastChild);
+			}
+		}
+
+		function setDuo(element) {
+
+			clearTodo("friends_todoList");
+			var friendUid = element.id;
+
+			if(friendUid == "defaultList") {
+				document.getElementById("friendTodoCard").setAttribute("style", "display:none;");
+			}
+			else {
+				document.getElementById("friendTodoCard").setAttribute("style", "display:flex;");
+				firebase.database().ref('toduos/' + friendUid + '/todos').once('value').then(function(snapshot) {
+					snapshot.forEach(function(todoDates) {
+						var enteredDate = todoDates.key;
+						todoDates.forEach(function(todoElements) {
+							var todoElement = todoElements.key;
+							if(todoElements.val() != 1) {
+								fillTodo(todoElement, enteredDate, "friends_todoList");
+							}
+						});
+					});
+				});
+			}
 		}
 
 		//Auth Changes
@@ -248,7 +310,7 @@
 						todoDates.forEach(function(todoElements) {
 							var todoElement = todoElements.key;
 							if(todoElements.val() != 1) {
-								fillTodo(todoElement, enteredDate);
+								fillTodo(todoElement, enteredDate, "my_todolist");
 							}
 						});
 					});
@@ -289,7 +351,7 @@
 				if(userEmail != null) {
 					newBar.className = "tab";
 					const tabElement = `
-						<a class="active">${userEmail}</a>
+						<a class="active" id="${friend}" onclick="setDuo(this)">${userEmail}</a>
 					`;
 					newBar.innerHTML = tabElement;
 					navBar.insertBefore(newBar, navBar.children[navBar.childElementCount-3]);
