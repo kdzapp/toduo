@@ -22,3 +22,8 @@
 .todoElement {
 
 }
+
+.important {
+  font-weight: bold;
+  font-size: 20pt;
+}

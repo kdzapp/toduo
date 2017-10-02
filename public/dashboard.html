@@ -211,10 +211,12 @@
 						var enteredDate = todoDates.key;
 						todoDates.forEach(function(todoElements) {
 							var todoElement = todoElements.key;
-							if(todoElements.val() != 1) {
-								fillTodo(todoElement, enteredDate, "my_todolist");
-							} else {
-								fillTodo(todoElement, enteredDate, "my_historyList")
+							if(todoElements.val() == 0) {
+								fillTodo(todoElement, enteredDate, "my_todolist", 0);
+							} else if (todoElements.val() == 2) {
+								fillTodo(todoElement, enteredDate, "my_todolist", 2);
+							}else {
+								fillTodo(todoElement, enteredDate, "my_historyList", 1)
 							}
 						});
 					});

@@ -131,17 +131,31 @@ function checkButton(element) {
 ////////////////////////////////
 
 //INITAL FILL YOUR LIST//
-function fillTodo(enteredTodo, enteredDate, todoList) {
+function fillTodo(enteredTodo, enteredDate, todoList, option) {
 
   var myList = document.getElementsByName(todoList)[0];
   var todo = document.createElement("tr");
 
   const todoElement = `
   <td>
-    <p class="todoElement">${enteredDate}</p>
+    <a class="white-text"><p class="todoElement">${enteredDate}</p></a>
   </td>
   <td>
-    <p class="todoElement">${enteredTodo}</p>
+    <a class="white-text" onclick="setToImportant(this)"><p class="todoElement">${enteredTodo}</p></a>
+  </td>
+  <td class="center-align">
+    <a class="btn-flat" onclick="checkButton(this)">
+      <i class="material-icons white-text" id="checkBox">check_box_outline_blank</i>
+    </a>
+  </td>
+  `;
+
+  const todoImportantElement = `
+  <td>
+    <a class="red-text important"><p class="todoElement">${enteredDate}</p></a>
+  </td>
+  <td>
+    <a class="red-text important" onclick="setToImportant(this)"><p class="todoElement">${enteredTodo}</p></a>
   </td>
   <td class="center-align">
     <a class="btn-flat" onclick="checkButton(this)">
@@ -164,8 +178,11 @@ function fillTodo(enteredTodo, enteredDate, todoList) {
   </td>
   `;
 
-  if(todoList == "friends_historyList" || todoList == "my_historyList") {
+  if(option == 1) {
     todo.innerHTML = historyTodoElement;
+  }
+  else if(option == 2) {
+    todo.innerHTML = todoImportantElement;
   }
   else {
     todo.innerHTML = todoElement;
@@ -173,6 +190,53 @@ function fillTodo(enteredTodo, enteredDate, todoList) {
 
   //-2 for the last element is editable one ()
   myList.insertBefore(todo, myList.children[0]);
+}
+
+//Set List Item to Important
+function setToImportant(ele) {
+
+  element = ele.parentNode.parentNode;
+
+  if(element.parentNode.getAttribute("name") == "friends_todoList") {
+    var userid = element.parentNode.id;
+
+    var date = element.getElementsByClassName("todoElement")[0].innerHTML;
+    var todo = element.getElementsByClassName("todoElement")[1].innerHTML;
+
+    console.log(date + todo)
+
+    if(element.getElementsByClassName("todoElement")[0].parentNode.className != "red-text important") {
+      element.getElementsByClassName("todoElement")[0].parentNode.setAttribute("class", "red-text important");
+      element.getElementsByClassName("todoElement")[1].parentNode.setAttribute("class", "red-text important");
+
+      firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(2);
+    }
+    else {
+      element.getElementsByClassName("todoElement")[0].parentNode.setAttribute("class", "white-text");
+      element.getElementsByClassName("todoElement")[1].parentNode.setAttribute("class", "white-text");
+
+      firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(0);
+    }
+
+  } else {
+    var userid = firebase.auth().currentUser.uid;
+
+    var date = element.getElementsByClassName("todoElement")[0].innerHTML;
+    var todo = element.getElementsByClassName("todoElement")[1].innerHTML;
+
+    if(element.getElementsByClassName("todoElement")[0].parentNode.className != "red-text important") {
+      element.getElementsByClassName("todoElement")[0].parentNode.setAttribute("class", "red-text important");
+      element.getElementsByClassName("todoElement")[1].parentNode.setAttribute("class", "red-text important");
+
+      firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(2);
+    }
+    else {
+      element.getElementsByClassName("todoElement")[0].parentNode.setAttribute("class", "white-text");
+      element.getElementsByClassName("todoElement")[1].parentNode.setAttribute("class", "white-text");
+
+      firebase.database().ref('toduos/' + userid + '/todos/' + date + '/' + todo).set(0);
+    }
+  }
 }
 
 //INITAL FILL OF OTHER USERS//
@@ -226,10 +290,12 @@ function setDuo(element) {
         var enteredDate = todoDates.key;
         todoDates.forEach(function(todoElements) {
           var todoElement = todoElements.key;
-          if(todoElements.val() != 1) {
-            fillTodo(todoElement, enteredDate, "friends_todoList");
+          if(todoElements.val() == 0) {
+            fillTodo(todoElement, enteredDate, "friends_todoList", 0);
+          } else if (todoElements.val() == 2) {
+            fillTodo(todoElement, enteredDate, "friends_todoList", 2)
           } else {
-            fillTodo(todoElement, enteredDate, "friends_historyList");
+            fillTodo(todoElement, enteredDate, "friends_historyList", 1);
           }
         });
       });
